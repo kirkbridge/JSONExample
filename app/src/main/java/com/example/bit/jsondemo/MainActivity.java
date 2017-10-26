@@ -67,19 +67,31 @@ public class MainActivity extends AppCompatActivity {
             String arena = null;
             String time = null;
             try {
+                // Need to create a inputstream to read in the file, file is located in the asset folder
                 InputStream stream = getAssets().open("schedule.json");
+
+                // Create the JSONReader which will use the input stream created previously
                 JsonReader reader = new JsonReader(new InputStreamReader(stream, "UTF-8"));
+
+                // The first element in the file is an object
                 reader.beginObject();
+                // iterate through the object till there are no more elements
                 while (reader.hasNext())
-                {   String name = reader.nextName();
+                {   // get the name of the property
+                    String name = reader.nextName();
+
+                    // find the first element (only element) in the object
                     if(name.equals("gameentry"))
                     {
+                        // the games are stored in an array so we must call beginArray
                         reader.beginArray();
                         while(reader.hasNext())
                         {
+                            // We are now at the game object
                             reader.beginObject();
                             while(reader.hasNext())
                             {
+                                // iterate through game object to get values
                                 name = reader.nextName();
                                 if(name.equals("date"))
                                 {
@@ -91,10 +103,14 @@ public class MainActivity extends AppCompatActivity {
                                 }
                                 else if (name.equals("awayTeam"))
                                 {
+                                    // awayteam is an embedded object in the game so lets call a method
+                                    // to process the away team
                                     away = getTeamName(reader);
                                 }
                                 else if (name.equals("homeTeam"))
                                 {
+                                    // hometeam is an embedded object in the game so lets call a method
+                                    // to process the home team
                                     home = getTeamName(reader);
                                 }
                                 else if (name.equals("location"))
@@ -103,23 +119,27 @@ public class MainActivity extends AppCompatActivity {
                                 }
                                 else
                                 {
+                                    // if the name of the property doesn't match any of the values we want then skip it
                                     reader.skipValue();
                                 }
                             }
+                            // we have reached the end of the game object we must end it now
                             reader.endObject();
+                            // add our new game to our list
                             games.add(new ListItem(home, away, gameDate, arena, time));
                         }
+                        // all the games have been processed we can close the array
                         reader.endArray();
 
                     }
 
                 }
+                // reached the end of the root object
                 reader.endObject();
-//                reader.endArray();
+
+                // close the reader we are done processing the file
                 reader.close();
             }
-
-
             catch(IOException ex)
             {
                 ex.printStackTrace();
@@ -128,13 +148,23 @@ public class MainActivity extends AppCompatActivity {
             return games;
         }
 
+        /**
+         * Description: Process the team object
+         * @param reader JsonReader that is reading the elements in the file
+         * @return  return the team name
+         * @throws IOException
+         */
         private String getTeamName(JsonReader reader) throws IOException
         {
             String team = null;
             String name;
+
+            // the team is a new object so we have to open it
             reader.beginObject();
             while(reader.hasNext())
             {
+                // iterate through properties in the object till the abbreviated
+                // name property is found
                 name = reader.nextName();
                 if(name.equals("Abbreviation"))
                 {
@@ -142,11 +172,13 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else
                 {
+                    // skip ever other property as we do not need it
                     reader.skipValue();
                 }
             }
+            // close the object
             reader.endObject();
-
+            // return the abbreviated team name.
             return team;
         }
 
@@ -155,6 +187,8 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(o);
             listAdapter = new ListItemAdapter(MainActivity.this, R.layout.list_item, games) ;
             lvSchedule.setAdapter(listAdapter);
+
+            Toast.makeText(MainActivity.this, "There are " + games.size() + " games tonight", Toast.LENGTH_LONG).show();
         }
     }
 
