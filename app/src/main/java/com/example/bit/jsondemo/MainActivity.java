@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadGames(View v)
     {
+        games = new ArrayList<ListItem>();
+
         ProcessJson task = new ProcessJson();
 
         task.execute();
