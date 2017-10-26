@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
             String away = null;
             String gameDate = null;
             String arena = null;
+            String time = null;
             try {
                 InputStream stream = getAssets().open("schedule.json");
                 JsonReader reader = new JsonReader(new InputStreamReader(stream, "UTF-8"));
@@ -84,6 +85,10 @@ public class MainActivity extends AppCompatActivity {
                                 {
                                     gameDate = reader.nextString();
                                 }
+                                else if (name.equals("time"))
+                                {
+                                    time = reader.nextString();
+                                }
                                 else if (name.equals("awayTeam"))
                                 {
                                     away = getTeamName(reader);
@@ -102,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             }
                             reader.endObject();
-                            games.add(new ListItem(home, away, gameDate, arena));
+                            games.add(new ListItem(home, away, gameDate, arena, time));
                         }
                         reader.endArray();
 
@@ -192,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if(tvTime != null)
                 {
-                    tvTime.setText(item.getGameDate());
+                    tvTime.setText(item.getGameDate() + " @ " + item.getTime());
                 }
             }
 

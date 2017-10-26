@@ -9,18 +9,21 @@ public class ListItem {
     private String awayTeam ;
     private String gameDate;
     private String arena;
+    private String time;
 
     public ListItem()
     {
 
     }
 
-    public ListItem(String homeTeam, String awayTeam, String gameDate, String arena)
+    public ListItem(String homeTeam, String awayTeam, String gameDate, String arena, String time)
     {
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
         this.gameDate = gameDate;
         this.arena = arena;
+        this.time = time;
+
     }
 
     public String getHomeTeam() {
@@ -58,6 +61,14 @@ public class ListItem {
     @Override
     public String toString()
     {
-        return String.format("%s vs %s @%s\n%s",homeTeam, awayTeam, arena, gameDate);
+        return String.format("%s vs %s @%s\n%s \t%s",homeTeam, awayTeam, arena, gameDate, time);
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

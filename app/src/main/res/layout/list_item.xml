@@ -10,25 +10,25 @@
 
         <TextView
             android:id="@+id/tvHome"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Home"
             android:textAllCaps="true"
             android:textSize="20dp" />
 
-        <EditText
-            android:id="@+id/vsText"
+        <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="vs." />
+            android:text="vs."
+            android:textSize="22dp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvAway"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Away"
